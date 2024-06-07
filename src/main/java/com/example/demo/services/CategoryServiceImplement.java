@@ -96,28 +96,45 @@ public class CategoryServiceImplement implements ICategoryServices {
 		List<Category> list = new ArrayList<>();
 		try {
 			Optional<Category> categorySearch = categoryDao.findById(id);
-			if(categorySearch.isPresent()) {
+			if (categorySearch.isPresent()) {
 				categorySearch.get().setName(category.getName());
 				categorySearch.get().setDescription(category.getDescription());
-				
+
 				Category categoryToUpdate = categoryDao.save(categorySearch.get());
-				
-				if(categoryToUpdate != null) {
+
+				if (categoryToUpdate != null) {
 					list.add(categoryToUpdate);
 					response.getCategoryResponse().setCategory(list);
 					response.setMetadata("Respuesta ok", "00", "Categoria Actualizada");
-				}else {
+				} else {
 					response.setMetadata("Respuesta no-ok", "-1", "Categoria no actualizada");
 					return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 				}
-				
-			}else {
+
+			} else {
 				response.setMetadata("Respuesta no-ok", "-1", "Categoria no encontrada");
 				return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 			}
 
 		} catch (Exception e) {
 			response.setMetadata("Respuesta no-ok", "-1", "!ERROR Al GRABAR CATEGORIA");
+			e.getStackTrace();
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<Category_ResponseRest> deleteById(Long id) {
+		Category_ResponseRest response = new Category_ResponseRest();
+		try {
+			categoryDao.deleteById(id);
+			response.setMetadata("Respuesta ok", "00", "Registro Eliminado");
+
+		} catch (Exception e) {
+			response.setMetadata("Respuesta no-ok", "-1", "!ERROR AL ELIMINAR CATEGORIA!");
 			e.getStackTrace();
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 
