@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,33 @@ public class CategoryServiceImplement implements ICategoryServices {
 			
 		}catch(Exception e){
 			response.setMetadata("Respuesta no-ok", "-1", "!ERROR!");
+			e.getStackTrace();
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseEntity<Category_ResponseRest> searchById(Long id) {
+		Category_ResponseRest response= new Category_ResponseRest();
+		List<Category> list= new ArrayList<>();
+		try {
+			Optional<Category> category = categoryDao.findById(id);
+			
+			if(category.isPresent()){
+				list.add(category.get());
+				response.getCategoryResponse().setCategory(list);
+				response.setMetadata("Respuesta ok", "00", "Categoria encontrada");
+			}else {
+				response.setMetadata("Respuesta no-ok", "-1", "Categoria no encontrada");
+				return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			}
+			
+			
+		}catch(Exception e){
+			response.setMetadata("Respuesta no-ok", "-1", "!ERROR Al CONSULTAR ID");
 			e.getStackTrace();
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			
