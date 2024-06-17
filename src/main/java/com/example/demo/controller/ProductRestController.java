@@ -4,9 +4,11 @@ import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,4 +73,47 @@ public class ProductRestController {
 		return response;
 		
 	}
+	@DeleteMapping("/products/{id}")
+	public ResponseEntity<ProductResponseRest> deleteById(@PathVariable Long id){
+		ResponseEntity<ProductResponseRest> response = productService.deleteById(id);
+		return response;
+	}
+	/**
+	 * 
+	 */
+	@GetMapping("/products")
+	public ResponseEntity<ProductResponseRest> search(){
+		ResponseEntity<ProductResponseRest> response = productService.search();
+		return response;
+	}
+	/**
+	 * Update Products
+	 * @param picture
+	 * @param name
+	 * @param price
+	 * @param account
+	 * @param categoryId
+	 * @param id
+	 * @return
+	 * @throws IOException
+	 */
+	@PutMapping("/products/{id}")
+	public ResponseEntity<ProductResponseRest> updateProducts(@RequestParam("picture") MultipartFile picture,
+			@RequestParam("name") String name, @RequestParam("price") int price, @RequestParam("account") int account,
+			@RequestParam("categoryId") Long categoryId, @PathVariable Long id)throws IOException 
+	{
+		Product product = new Product();
+		product.setName(name);
+		product.setCount(account);
+		product.setPrice(price);
+		product.setPicture(Util.compressZLib(picture.getBytes()));
+		
+		ResponseEntity<ProductResponseRest> response = productService.updateProducts(product, categoryId, id);
+		
+		
+		return response;
+	};
+	
+	
+	
 }
