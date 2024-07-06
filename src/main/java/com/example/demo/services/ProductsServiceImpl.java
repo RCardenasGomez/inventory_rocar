@@ -121,7 +121,7 @@ public class ProductsServiceImpl implements IProductsServices {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
+	@Transactional
 	public ResponseEntity<ProductResponseRest> deleteById(Long id) {
 		ProductResponseRest response = new ProductResponseRest();
 		try {
@@ -139,7 +139,7 @@ public class ProductsServiceImpl implements IProductsServices {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public ResponseEntity<ProductResponseRest> search() {
 		ProductResponseRest response = new ProductResponseRest();
 		List<Product> list = new ArrayList<>();
@@ -188,7 +188,7 @@ public class ProductsServiceImpl implements IProductsServices {
 			Optional<Product> productSearch = productDao.findById(id);
 			if (productSearch.isPresent()) {
 				// to update the product
-				productSearch.get().setCount(product.getCount());
+				productSearch.get().setAccount(product.getAccount());
 				productSearch.get().setCategory(product.getCategory());
 				productSearch.get().setName(product.getName());
 				productSearch.get().setPicture(product.getPicture());

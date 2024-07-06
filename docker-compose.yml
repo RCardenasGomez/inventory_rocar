@@ -1,0 +1,31 @@
+services:
+  mysql:
+    container_name: mysql-bsn
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: Admin$2024
+      MYSQL_DATABASE: db_inventory
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Admin$2024
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+      - 3307:3306
+    networks:
+      - spring-demo
+    restart: unless-stopped
+  
+  mail-dev:
+    container_name: mail-dev-bsn
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
+
+networks:
+  spring-demo:
+    driver: bridge
+
+volumes:
+  mysql:
+    driver: local

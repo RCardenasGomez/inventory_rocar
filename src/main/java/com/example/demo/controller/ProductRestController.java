@@ -46,7 +46,7 @@ public class ProductRestController {
 	{
 		Product product = new Product();
 		product.setName(name);
-		product.setCount(account);
+		product.setAccount(account);
 		product.setPrice(price);
 		product.setPicture(Util.compressZLib(picture.getBytes()));
 		
@@ -104,7 +104,7 @@ public class ProductRestController {
 	{
 		Product product = new Product();
 		product.setName(name);
-		product.setCount(account);
+		product.setAccount(account);
 		product.setPrice(price);
 		product.setPicture(Util.compressZLib(picture.getBytes()));
 		

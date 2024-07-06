@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: dev  # Esto indica que el perfil activo es 'dev'
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 3MB
+springdoc:
+  default-produces-media-type: application/json
+server:
+  servlet:
+    context-path: /api/v1/

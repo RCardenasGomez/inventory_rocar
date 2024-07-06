@@ -30,13 +30,13 @@ public class Product implements Serializable {
 	private Long id;
 	private String name;
 	private int price;
-	private int count;
+	private int account;
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Category category;
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
-	@Column(name= "picture", length=1000, columnDefinition = "longblob")
+	@Column(name= "picture", length=100000, columnDefinition = "longblob")
 	private byte[] picture;
 	
 }
